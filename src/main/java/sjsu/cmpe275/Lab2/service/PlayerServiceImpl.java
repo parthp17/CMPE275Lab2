@@ -1,8 +1,13 @@
 package sjsu.cmpe275.Lab2.service;
 
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sjsu.cmpe275.Lab2.model.Player;
+import sjsu.cmpe275.Lab2.model.Sponsor;
 import sjsu.cmpe275.Lab2.repositories.PlayerRepository;
 
 /**
@@ -10,6 +15,7 @@ import sjsu.cmpe275.Lab2.repositories.PlayerRepository;
  */
 
 @Service
+@Transactional
 public class PlayerServiceImpl implements PlayerService{
 
     @Autowired
@@ -34,4 +40,9 @@ public class PlayerServiceImpl implements PlayerService{
     public void delete(long id) {
         this.playerRepository.delete(id);
     }
+
+	@Override
+	public Player findBySponsor(Sponsor sponsor) {
+		return this.playerRepository.findBySponsor(sponsor);
+	}
 }

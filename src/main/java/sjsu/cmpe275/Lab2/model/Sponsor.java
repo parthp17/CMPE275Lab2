@@ -1,13 +1,16 @@
 package sjsu.cmpe275.Lab2.model;
 
 import javax.persistence.*;
+
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
 import java.io.Serializable;
 
 /**
  * Created by kemy on 11/13/17.
  */
 @Entity
-@Table(name="sponsor")
+@EnableAutoConfiguration
 public class Sponsor implements Serializable {
 
     @Id
@@ -15,8 +18,11 @@ public class Sponsor implements Serializable {
     private long id;
     private String name;
     private String description;
-//    private Address address;
-
+    @Embedded
+    private Address address;
+    
+    public Sponsor() {}
+    
     public Sponsor(long id, String name, String description) {
         this.id = id;
         this.name = name;
@@ -46,4 +52,12 @@ public class Sponsor implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 }

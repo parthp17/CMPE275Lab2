@@ -1,6 +1,7 @@
 package sjsu.cmpe275.Lab2.model;
 
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,34 +11,41 @@ import java.util.List;
  * Created by kemy on 11/13/17.
  */
 @Entity
+@EnableAutoConfiguration
 @Table(name="player")
 public class Player implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
-
+    @Column(nullable=false)
     private String firstName;
+    @Column(nullable=false)
     private String lastName;
+    @Column(unique=true, nullable=false)
     private String email;
     private String description;
-//    private Address address;
+    @Embedded
+    private Address address;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="sponsorId")
     private Sponsor sponsor;
-
-    @OneToMany
+    
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "opponents",
+    joinColumns = {@JoinColumn(name = "player1", referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name = "player2", referencedColumnName = "id")})
     private List<Player> opponents;
 
-    public Player() {}
-
-    public Player(long id, String firstName, String lastName, String email, String description, Sponsor sponsor, List<Player> opponents) {
+    public Player() {
+		// TODO Auto-generated constructor stub
+	}
+    
+    public Player(String firstName, String lastName, String email) {
         super();
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.description = description;
-        this.sponsor = sponsor;
-        this.opponents = opponents;
     }
 
     public long getId() {
@@ -98,4 +106,12 @@ public class Player implements Serializable {
     public void setOpponents(List<Player> opponents) {
         this.opponents = opponents;
     }
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 }
