@@ -3,9 +3,25 @@ package sjsu.cmpe275.Lab2.model;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 
 /**
  * Created by kemy on 11/13/17.
@@ -31,13 +47,20 @@ public class Player implements Serializable {
     @JoinColumn(name="sponsorId")
     private Sponsor sponsor;
     
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade =
+        {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
+        })
     @JoinTable(name = "opponents",
-    joinColumns = {@JoinColumn(name = "player1", referencedColumnName = "id")},
-    inverseJoinColumns = {@JoinColumn(name = "player2", referencedColumnName = "id")})
-    private List<Player> opponents;
+    joinColumns = {@JoinColumn(name = "player1", referencedColumnName = "id", nullable = false)},
+    inverseJoinColumns = {@JoinColumn(name = "player2", referencedColumnName = "id",nullable = false)})
+    @JsonIgnoreProperties("opponents")
+    private Set<Player> opponents;
 
-    public Player() {
+	public Player() {
 		// TODO Auto-generated constructor stub
 	}
     
@@ -99,11 +122,11 @@ public class Player implements Serializable {
         this.sponsor = sponsor;
     }
 
-    public List<Player> getOpponents() {
+    public Set<Player> getOpponents() {
         return opponents;
     }
 
-    public void setOpponents(List<Player> opponents) {
+    public void setOpponents(Set<Player> opponents) {
         this.opponents = opponents;
     }
 

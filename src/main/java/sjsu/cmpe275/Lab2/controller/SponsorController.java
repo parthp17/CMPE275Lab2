@@ -17,8 +17,10 @@ import sjsu.cmpe275.Lab2.model.Player;
 import sjsu.cmpe275.Lab2.model.Sponsor;
 import sjsu.cmpe275.Lab2.service.PlayerService;
 import sjsu.cmpe275.Lab2.service.SponsorService;
+import sjsu.cmpe275Lab2.CustomException.CustomException;
 
 @RestController
+@RequestMapping("/sponsor")
 public class SponsorController {
 	
 	@Autowired
@@ -26,7 +28,7 @@ public class SponsorController {
 	@Autowired
 	private PlayerService playerService;
 	
-	@RequestMapping(value="/sponsor", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Object> createSponsor(@RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "street", required = false) String street,
@@ -34,31 +36,28 @@ public class SponsorController {
             @RequestParam(value = "state", required = false) String state,
             @RequestParam(value = "zip", required = false) String zip) {
 		try {
-			Sponsor newSponsor = new Sponsor();
-			newSponsor.setName(name);
-			newSponsor.setDescription(description);
-			newSponsor.setAddress(new Address(street,city,state,zip));
-			sponsorService.save(newSponsor);
+			Sponsor newSponsor = sponsorService.createSponsor(name, description, street, city, state, zip);
 			return new ResponseEntity<Object>(newSponsor, HttpStatus.OK);		
-		}catch(Exception e) {
-			return new ResponseEntity<Object>("Invalid Request",HttpStatus.BAD_REQUEST);
+		}catch(CustomException ce) {
+			return new ResponseEntity<Object>(ce.getMessage(),ce.getStatus());
+		}catch(Exception e){
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	@RequestMapping(value ="/sponsor/{id}", method = RequestMethod.GET)
+	@RequestMapping(value ="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getSponsor(@PathVariable("id") long id) {
 		try {
-			Sponsor sponsor = sponsorService.findOne(id);
-			if(sponsor == null) {
-				return new ResponseEntity<Object>("Sponsor is not present",HttpStatus.NOT_FOUND);
-			}
+			Sponsor sponsor = sponsorService.getSponsor(id);
 			return new ResponseEntity<Object>(sponsor,HttpStatus.OK);
-		}catch(Exception e) {
-			return new ResponseEntity<Object>("bad request",HttpStatus.BAD_REQUEST);
+		}catch(CustomException ce) {
+			return new ResponseEntity<Object>(ce.getMessage(),ce.getStatus());
+		}catch(Exception e){
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	@RequestMapping(value="/sponsor/{id}", method = RequestMethod.POST)
+	@RequestMapping(value="/{id}", method = RequestMethod.POST)
 	public ResponseEntity<Object> updateSponsor(@PathVariable("id") long id,
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "description", required = false) String description,
@@ -68,40 +67,26 @@ public class SponsorController {
             @RequestParam(value = "zip", required = false) String zip) {
 		Sponsor sponsor = null;
 		try {
-			sponsor = sponsorService.findOne(id);
-			if(sponsor == null) {
-				return new ResponseEntity<Object>("Sponsor is not present", HttpStatus.NOT_FOUND);
-			}
-			sponsor.setName(name);
-			sponsor.setDescription(description);
-			sponsor.setAddress(new Address(street,city,state,zip));
-			sponsorService.save(sponsor);
+			sponsor = sponsorService.updateSponsor(id, name, description, street, city, state, zip);
 			return new ResponseEntity<Object>(sponsor,HttpStatus.OK);
-		}catch(Exception e) {
-			return new ResponseEntity<Object>("Required Parameter is not given", HttpStatus.BAD_REQUEST);
+		}catch(CustomException ce) {
+			return new ResponseEntity<Object>(ce.getMessage(),ce.getStatus());
+		}catch(Exception e){
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	@RequestMapping(value = "/sponsor/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteSponsor(@PathVariable long id)
     {
 		Sponsor sponsor = null;
 		try {
-			sponsor = sponsorService.findOne(id);
-			if(sponsor == null) {
-				return new ResponseEntity<Object>("Sponsor is not present", HttpStatus.NOT_FOUND);
-			}
-			Player player = playerService.findBySponsor(sponsor);
-			
-			if(player == null) {
-				sponsorService.delete(id);
-				return new ResponseEntity<Object>(sponsor,HttpStatus.OK);
-			}else {
-				return new ResponseEntity<Object>("Player is belonging to this Sponsor",HttpStatus.BAD_REQUEST);
-			}
-		}
-		catch(Exception e) {
-			return new ResponseEntity<Object>("Invalid request",HttpStatus.BAD_REQUEST);
+			sponsor = sponsorService.deleteSponsor(id);
+			return new ResponseEntity<Object>(sponsor,HttpStatus.OK);
+		}catch(CustomException ce) {
+			return new ResponseEntity<Object>(ce.getMessage(),ce.getStatus());
+		}catch(Exception e){
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
     }
 }

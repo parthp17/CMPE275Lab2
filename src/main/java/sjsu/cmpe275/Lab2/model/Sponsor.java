@@ -16,6 +16,8 @@ public class Sponsor implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
+    
+    @Column(unique=true, nullable=false)
     private String name;
     private String description;
     @Embedded
@@ -23,10 +25,8 @@ public class Sponsor implements Serializable {
     
     public Sponsor() {}
     
-    public Sponsor(long id, String name, String description) {
-        this.id = id;
+    public Sponsor(String name) {
         this.name = name;
-        this.description = description;
     }
 
     public long getId() {

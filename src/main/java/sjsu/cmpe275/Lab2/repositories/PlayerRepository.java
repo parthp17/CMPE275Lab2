@@ -11,4 +11,5 @@ import sjsu.cmpe275.Lab2.model.Sponsor;
 public interface PlayerRepository extends JpaRepository<Player, Long> {
 	
 	public Player findBySponsor(Sponsor sponsor);
+	public Player findByEmail(String email);
 }
