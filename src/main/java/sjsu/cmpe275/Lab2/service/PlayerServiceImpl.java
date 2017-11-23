@@ -22,7 +22,7 @@ import sjsu.cmpe275Lab2.CustomException.CustomException;
  */
 
 @Service
-@Transactional(propagation=Propagation.REQUIRED)
+@Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
 public class PlayerServiceImpl implements PlayerService{
 
     @Autowired
@@ -111,6 +111,7 @@ public class PlayerServiceImpl implements PlayerService{
 		}catch(CustomException ce){
 			System.err.println("Exception message: " + ce.getMessage());
 			throw ce;
+			
 		}
     	catch(Exception e) {
 			e.printStackTrace();

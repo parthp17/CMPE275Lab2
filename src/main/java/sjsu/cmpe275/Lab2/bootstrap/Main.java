@@ -7,6 +7,14 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/*
+ * Project: CMPE275Lab2
+ * Author: Kemy Halani, Parth Pandya, Rahil Modi
+ * Purpose: Assignment submission at San Jose State University
+ * Do not use for any purpose without prior consent from Author or institution
+ * 
+ */
+
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {
@@ -19,6 +27,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("sjsu.cmpe275.Lab2.model")
 public class Main {
 	
+	
+	/*
+	 * Main class is the entry point for the application.
+	 */
 	public static void main(String[] args) {
         SpringApplication.run(Main.class,args);
     }

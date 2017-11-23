@@ -28,7 +28,7 @@ public class SponsorController {
 	@Autowired
 	private PlayerService playerService;
 	
-	@RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Object> createSponsor(@RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "street", required = false) String street,

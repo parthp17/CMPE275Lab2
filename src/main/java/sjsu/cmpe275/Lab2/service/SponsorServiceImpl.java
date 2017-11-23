@@ -23,7 +23,7 @@ import sjsu.cmpe275Lab2.CustomException.CustomException;
  */
 
 @Service
-@Transactional(propagation=Propagation.REQUIRED)
+@Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
 public class SponsorServiceImpl implements SponsorService {
 
 	@Autowired
@@ -53,7 +53,7 @@ public class SponsorServiceImpl implements SponsorService {
 		try {
 			Sponsor sponsor = this.sponsorRepository.findOne(id);
 			if(sponsor == null) {
-				throw new CustomException("Sponsor is not present", HttpStatus.BAD_REQUEST);
+				throw new CustomException("Sponsor not found", HttpStatus.NOT_FOUND);
 			}
 			return sponsor;
 		}catch(CustomException ce){
@@ -72,7 +72,7 @@ public class SponsorServiceImpl implements SponsorService {
 		try {
 			sponsor = this.sponsorRepository.findOne(id);
 			if(sponsor == null) {
-				throw new CustomException("Sponsor is not present", HttpStatus.BAD_REQUEST);
+				throw new CustomException("Sponsor not found", HttpStatus.NOT_FOUND);
 			}
 			sponsor.setName(name);
 			sponsor.setDescription(description);
@@ -94,7 +94,7 @@ public class SponsorServiceImpl implements SponsorService {
 		try {
 			sponsor = this.sponsorRepository.findOne(id);
 			if(sponsor == null) {
-				throw new CustomException("Sponsor is not present", HttpStatus.BAD_REQUEST);
+				throw new CustomException("Sponsor not found", HttpStatus.NOT_FOUND);
 			}
 			Player player = this.playerRepository.findBySponsor(sponsor);
 			if(player == null) 
