@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /*
  * Project: CMPE275Lab2
- * Author: Kemy Halani, Parth Pandya, Rahil Modi
+ * @author: Kemy Halani, Parth Pandya, Rahil Modi
  * Purpose: Assignment submission at San Jose State University
  * Do not use for any purpose without prior consent from Author or institution
  * 

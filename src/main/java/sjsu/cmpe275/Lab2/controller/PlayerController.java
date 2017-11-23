@@ -15,8 +15,12 @@ import sjsu.cmpe275Lab2.CustomException.CustomException;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by kemy on 11/13/17.
+/*
+ * Project: CMPE275Lab2
+ * @author: Kemy Halani, Parth Pandya, Rahil Modi
+ * Purpose: Assignment submission at San Jose State University
+ * Do not use for any purpose without prior consent from Author or institution
+ * 
  */
 
 @RestController
@@ -27,6 +31,13 @@ public class PlayerController {
     @Autowired
     private SponsorService sponsorService;
     
+    /*
+	 * REST end point for player registration
+	 * firstname, lastname, email are mandatory fields. Email needs to be unique.
+	 * others are optional. does not accept opponents
+	 * returns newly player object with status code 200 if successful.
+	 * 400 if parameters missing.
+	 */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createPlayer(@RequestParam(value = "firstname", required = true) String fName,
     		@RequestParam(value = "lastname", required = true) String lName,
@@ -48,6 +59,11 @@ public class PlayerController {
 		}
     }
 
+    /*
+     * REST end point to retrieve a player by its id
+     * returns player object with status code 200 if successful.
+	 * 404 if player not found 
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getPlayer(@PathVariable long id)
     {
@@ -61,6 +77,14 @@ public class PlayerController {
 		}
     }
 
+    /*
+	 * REST end point to update player
+	 * firstname, lastname, email are mandatory fields. Email needs to be unique.
+	 * others are optional
+	 * returns updated player object with status code 200 if successful.
+	 * 400 if parameters missing.
+	 * 404 if player not found
+	 */
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<Object> updatePlayer(@PathVariable("id") long id,
     		@RequestParam(value = "firstname", required = true) String fName,
@@ -83,6 +107,11 @@ public class PlayerController {
 		}
     }
 
+    /*
+     * REST end point to delete a player by its id
+     * returns deleted player object with status code 200 if successful.
+	 * 404 if player not found
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deletePlayer(@PathVariable long id)
     {

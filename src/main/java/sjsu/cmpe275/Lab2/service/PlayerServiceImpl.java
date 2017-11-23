@@ -1,5 +1,8 @@
 package sjsu.cmpe275.Lab2.service;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +20,13 @@ import sjsu.cmpe275.Lab2.repositories.PlayerRepository;
 import sjsu.cmpe275.Lab2.repositories.SponsorRepository;
 import sjsu.cmpe275Lab2.CustomException.CustomException;
 
-/**
- * Created by kemy on 11/13/17.
+/*
+ * Project: CMPE275Lab2
+ * @author: Kemy Halani, Parth Pandya, Rahil Modi
+ * Purpose: Assignment submission at San Jose State University
+ * Do not use for any purpose without prior consent from Author or institution
+ * 
  */
-
 @Service
 @Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
 public class PlayerServiceImpl implements PlayerService{
@@ -32,6 +38,10 @@ public class PlayerServiceImpl implements PlayerService{
     private SponsorRepository sponsorRepository;
     
 
+    /*
+	 * Implementation to create an instance of Player
+	 * throws custom exception in case unique email is not provided
+	 */
 	@Override
 	public Player createPlayer(String fName, String lName, String email, String description, String street, String city,
 											String state, String zip, Long sponsor) throws CustomException
@@ -62,6 +72,10 @@ public class PlayerServiceImpl implements PlayerService{
 		
 	}
 	
+	/*
+	 * Implementation to retrieve an instance of Player
+	 * throws custom exception in case player is not found
+	 */
     @Override
 	@Transactional(readOnly=true)
     public Player getPlayer(long id) throws CustomException
@@ -82,6 +96,10 @@ public class PlayerServiceImpl implements PlayerService{
 		}
     }
 
+    /*
+	 * Implementation to update an instance of Player
+	 * throws custom exception in case player is not found or unique email is not provided or mentioned sponsor not found 
+	 */
     @Override
     public Player updatePlayer( long id, String fName, String lName, String email, String description,
             String street, String city, String state, String zip, Long sponsor) throws CustomException {
@@ -119,6 +137,11 @@ public class PlayerServiceImpl implements PlayerService{
 		}
     }
 
+    /*
+     * @see sjsu.cmpe275.Lab2.service.PlayerService#deletePlayer(long)
+     * Implementation to delete an instance of Player
+	 * throws custom exception in case player is not found
+     */
     @Override
     public Player deletePlayer(long id) throws CustomException
     {
@@ -127,6 +150,16 @@ public class PlayerServiceImpl implements PlayerService{
 			player = this.playerRepository.findOne(id);
 			if(player == null) {
 				throw new CustomException("Player is not present",HttpStatus.NOT_FOUND);
+			}
+			else
+			{
+				Set<Player> opponents= player.getOpponents();
+				Iterator<Player> it = opponents.iterator();
+				while(it.hasNext())
+				{
+					Player op = it.next();
+					op.getOpponents().remove(player);
+				}
 			}
 			this.playerRepository.delete(id);
 			return player;
@@ -140,6 +173,12 @@ public class PlayerServiceImpl implements PlayerService{
 		}
     }
     
+    
+    /*
+     * @see sjsu.cmpe275.Lab2.service.PlayerService#addOpponents(long, long)
+     * Implementation to make two players as opponents of each other
+	 * throws custom exception in case player is not found
+     */
     @Override
 	public String addOpponents(long id1, long id2) throws CustomException
 	{
@@ -174,6 +213,11 @@ public class PlayerServiceImpl implements PlayerService{
 		}
 	}
 	
+    /*
+     * @see sjsu.cmpe275.Lab2.service.PlayerService#deleteOpponents(long, long)
+     * Implementation to remove two players as opponents of each other
+	 * throws custom exception in case player is not found or players are not opponent of each other
+     */
 	@Override
 	public String deleteOpponents(long id1,long id2) throws CustomException
 	{

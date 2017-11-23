@@ -17,9 +17,12 @@ import sjsu.cmpe275.Lab2.repositories.PlayerRepository;
 import sjsu.cmpe275.Lab2.repositories.SponsorRepository;
 import sjsu.cmpe275Lab2.CustomException.CustomException;
 
-/**
- * @author rahil
- *
+/*
+ * Project: CMPE275Lab2
+ * @author: Kemy Halani, Parth Pandya, Rahil Modi
+ * Purpose: Assignment submission at San Jose State University
+ * Do not use for any purpose without prior consent from Author or institution
+ * 
  */
 
 @Service
@@ -31,6 +34,12 @@ public class SponsorServiceImpl implements SponsorService {
 	
 	@Autowired
 	private PlayerRepository playerRepository;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see sjsu.cmpe275.Lab2.service.SponsorService#createSponsor(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * Implementation to create an instance of Sponsor
+	 */
 	
 	@Override
 	public Sponsor createSponsor(String name, String description, String street, String city, String state, String zip) throws CustomException{
@@ -47,6 +56,14 @@ public class SponsorServiceImpl implements SponsorService {
 		}
 	}
 	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see sjsu.cmpe275.Lab2.service.SponsorService#getSponsor(long)
+	 * 
+	 * Implementation to retrieve an instance of Sponsor
+	 * throws custom exception in case Sponsor is not found
+	 */
 	@Override
 	@Transactional(readOnly=true)
 	public Sponsor getSponsor(long id) throws CustomException{
@@ -65,6 +82,14 @@ public class SponsorServiceImpl implements SponsorService {
 			throw new CustomException("Server error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see sjsu.cmpe275.Lab2.service.SponsorService#updateSponsor(long, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * Implementation to update an instance of Sponsor
+	 * throws custom exception if sponsor not found.
+	 * 
+	 */
 	
 	@Override
 	public Sponsor updateSponsor( long id, String name, String description, String street, String city, String state, String zip) throws CustomException{
@@ -87,6 +112,13 @@ public class SponsorServiceImpl implements SponsorService {
 			throw new CustomException("Server error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see sjsu.cmpe275.Lab2.service.SponsorService#deleteSponsor(long)
+	 * Implementation to delete an instance of Sponsor
+	 * throws custom exception if sponsor not found or if it still sponsors other players
+	 */
 	
 	@Override
 	public Sponsor deleteSponsor(long id) throws CustomException{

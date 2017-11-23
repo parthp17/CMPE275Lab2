@@ -13,7 +13,7 @@ import sjsu.cmpe275Lab2.CustomException.CustomException;
 
 /*
  * Project: CMPE275Lab2
- * Authors: Kemy Halani, Parth Pandya, Rahil Modi
+ * @author: Kemy Halani, Parth Pandya, Rahil Modi
  * Purpose: Assignment submission at San Jose State University for CMPE 275
  * Do not use for any purpose without prior consent from Authors or Institution
  * 
@@ -26,7 +26,10 @@ public class OpponentController {
 	private PlayerService playerService;
 	
 	/*
-	 * 
+	 * rest end point to make two players opponents of each other
+	 * returns 200 if two players are already opponents or if they are set to opponents
+	 * return 400 if both players are same.
+	 * returns 404 if either of player is not found 
 	 */
 	@RequestMapping(value = "/{id1}/{id2}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> addOpponents(@PathVariable("id1") long id1, @PathVariable("id2") long id2)
@@ -44,6 +47,11 @@ public class OpponentController {
 		return response;
 	}
 	
+	/*
+	 * rest end point to remove two players as opponents of each other
+	 * returns 200 if two players after removing two players as opponents
+	 * returns 404 if either of player is not found or they are not opponents
+	 */
 	@RequestMapping(value = "/{id1}/{id2}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deleteOpponents(@PathVariable("id1") long id1, @PathVariable("id2") long id2)
 	{

@@ -6,9 +6,15 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import java.io.Serializable;
 
-/**
- * Created by kemy on 11/13/17.
+/*
+ * Project: CMPE275Lab2
+ * @author: Kemy Halani, Parth Pandya, Rahil Modi
+ * Purpose: Assignment submission at San Jose State University
+ * Do not use for any purpose without prior consent from Author or institution
+ * 
  */
+
+
 @Entity
 @EnableAutoConfiguration
 public class Sponsor implements Serializable {

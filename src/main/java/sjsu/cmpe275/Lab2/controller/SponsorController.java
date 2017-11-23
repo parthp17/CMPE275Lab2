@@ -19,6 +19,14 @@ import sjsu.cmpe275.Lab2.service.PlayerService;
 import sjsu.cmpe275.Lab2.service.SponsorService;
 import sjsu.cmpe275Lab2.CustomException.CustomException;
 
+/*
+ * Project: CMPE275Lab2
+ * @author: Kemy Halani, Parth Pandya, Rahil Modi
+ * Purpose: Assignment submission at San Jose State University
+ * Do not use for any purpose without prior consent from Author or institution
+ * 
+ */
+
 @RestController
 @RequestMapping("/sponsor")
 public class SponsorController {
@@ -28,6 +36,13 @@ public class SponsorController {
 	@Autowired
 	private PlayerService playerService;
 	
+	
+	/*
+	 * REST end point to create a sponsor
+	 * Name is mandatory, need not be unique.
+	 * returns newly Sponsor object with status code 200 if successful.
+	 * 400 if parameters missing.
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Object> createSponsor(@RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "description", required = false) String description,
@@ -45,6 +60,11 @@ public class SponsorController {
 		}
 	}
 	
+	/*
+	 * REST end point to retrieve sponsor by its id.
+	 * returns Sponsor object with status code 200 if successful.
+	 * 404 if sponsor not found
+	 */
 	@RequestMapping(value ="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getSponsor(@PathVariable("id") long id) {
 		try {
@@ -57,6 +77,13 @@ public class SponsorController {
 		}
 	}
 	
+	/*
+	 * REST end point to update update player by its id.
+	 * name is mandatory input.
+	 * returns updated Sponsor object with status code 200 if successful.
+	 * 400 if parameters missing.
+	 * 404 if sponsor not found
+	 */
 	@RequestMapping(value="/{id}", method = RequestMethod.POST)
 	public ResponseEntity<Object> updateSponsor(@PathVariable("id") long id,
             @RequestParam(value = "name", required = true) String name,
@@ -76,6 +103,12 @@ public class SponsorController {
 		}
 	}
 	
+	/*
+	 * REST end point to delete a sponsor by its id.
+	 * return deleted sponsor object if no dependency found with status code 200.
+	 * in case of dependency it returns status code 400
+	 * else if sponsor does not not exist return 404 
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteSponsor(@PathVariable long id)
     {
